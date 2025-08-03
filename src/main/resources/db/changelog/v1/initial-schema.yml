@@ -1,0 +1,168 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-initial-schema
+      author: VD
+      changes:
+        - createTable:
+            tableName: addresses
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+              - column:
+                  name: house_number
+                  type: integer
+                  constraints:
+                    nullable: false
+              - column:
+                  name: street
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: city
+                  type: varchar(100)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: country
+                  type: varchar(100)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: post_code
+                  type: varchar(20)
+
+        - createTable:
+            tableName: contacts
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+              - column:
+                  name: phone
+                  type: varchar(50)
+              - column:
+                  name: email
+                  type: varchar(255)
+
+        - createTable:
+            tableName: check_times
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+              - column:
+                  name: check_in
+                  type: varchar(10)
+              - column:
+                  name: check_out
+                  type: varchar(10)
+
+        - createTable:
+            tableName: amenities
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+              - column:
+                  name: name
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+
+        - createTable:
+            tableName: hotels
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+              - column:
+                  name: name
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: description
+                  type: varchar(10000)
+              - column:
+                  name: brand
+                  type: varchar(255)
+              - column:
+                  name: address_id
+                  type: bigint
+              - column:
+                  name: contact_id
+                  type: bigint
+              - column:
+                  name: time_id
+                  type: bigint
+
+        - createTable:
+            tableName: hotel_amenities
+            columns:
+              - column:
+                  name: hotel_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+              - column:
+                  name: amenity_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+
+        - addPrimaryKey:
+            tableName: hotel_amenities
+            columnNames: hotel_id, amenity_id
+            constraintName: pk_hotel_amenities
+
+        - addForeignKeyConstraint:
+            baseTableName: hotel_amenities
+            baseColumnNames: hotel_id
+            constraintName: fk_hotel_amenities_hotel
+            referencedTableName: hotels
+            referencedColumnNames: id
+
+        - addForeignKeyConstraint:
+            baseTableName: hotel_amenities
+            baseColumnNames: amenity_id
+            constraintName: fk_hotel_amenities_amenity
+            referencedTableName: amenities
+            referencedColumnNames: id
+
+        - addForeignKeyConstraint:
+            baseTableName: hotels
+            baseColumnNames: address_id
+            constraintName: fk_hotels_address
+            referencedTableName: addresses
+            referencedColumnNames: id
+
+        - addForeignKeyConstraint:
+            baseTableName: hotels
+            baseColumnNames: contact_id
+            constraintName: fk_hotels_contact
+            referencedTableName: contacts
+            referencedColumnNames: id
+
+        - addForeignKeyConstraint:
+            baseTableName: hotels
+            baseColumnNames: time_id
+            constraintName: fk_hotels_time
+            referencedTableName: check_times
+            referencedColumnNames: id
