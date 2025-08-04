@@ -46,7 +46,7 @@ public class HotelServiceTest {
                         .postCode("12345")
                         .build())
                 .contacts(ContactDto.builder()
-                        .phone("+375111111111")
+                        .phone("+375 17 111-11-11")
                         .email("test@example.com")
                         .build())
                 .arrivalTime(TimeDto.builder()
@@ -77,7 +77,7 @@ public class HotelServiceTest {
                 .brand("Another Brand")
                 .address(createDto.getAddress())
                 .contacts(ContactDto.builder()
-                        .phone("+375111111111") // Same phone
+                        .phone("+375 17 111-11-11") // Same phone
                         .email("another@example.com")
                         .build())
                 .arrivalTime(createDto.getArrivalTime())

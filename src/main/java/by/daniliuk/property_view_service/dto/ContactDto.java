@@ -16,7 +16,8 @@ import lombok.NoArgsConstructor;
 public class ContactDto {
     @NotNull
     @NotBlank
-    @Pattern(regexp = "^\\+[0-9]{1,15}$")
+    //@Pattern(regexp = "^\\+[0-9]{1,15}$")
+    @Pattern(regexp = "^\\+[0-9]{1,3}([- ]?[0-9]{1,4}){2,7}$")
     private String phone;
 
     @NotNull

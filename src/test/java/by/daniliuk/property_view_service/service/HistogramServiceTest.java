@@ -15,7 +15,8 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.Map;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @SpringBootTest
 @ActiveProfiles("test")
@@ -33,12 +34,12 @@ public class HistogramServiceTest {
 
     @BeforeEach
     void setUp() {
-        createHotel("Hotel A", "Brand X", "Minsk");
-        createHotel("Hotel B", "Brand X", "Grodno");
-        createHotel("Hotel C", "Brand Y", "Minsk");
+        createHotel("Hotel A", "Brand X", "Minsk", "111-11-11");
+        createHotel("Hotel B", "Brand X", "Grodno", "222-22-22");
+        createHotel("Hotel C", "Brand Y", "Minsk", "333-33-33");
     }
 
-    private void createHotel(String name, String brand, String city) {
+    private void createHotel(String name, String brand, String city, String phoneSuffix) {
         hotelService.createHotel(HotelCreateDto.builder()
                 .name(name)
                 .brand(brand)
@@ -50,7 +51,7 @@ public class HistogramServiceTest {
                         .postCode("220000")
                         .build())
                 .contacts(ContactDto.builder()
-                        .phone("+375" + (System.currentTimeMillis() % 100000000L)) // Unique phone
+                        .phone("+375 17 " + phoneSuffix)
                         .email(name.replace(" ", "") + "@example.com")
                         .build())
                 .arrivalTime(TimeDto.builder().checkIn("14:00").build())
