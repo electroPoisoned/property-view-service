@@ -50,7 +50,7 @@ public class HistogramServiceTest {
                         .postCode("220000")
                         .build())
                 .contacts(ContactDto.builder()
-                        .phone("+375" + System.currentTimeMillis()) // Unique phone
+                        .phone("+375" + (System.currentTimeMillis() % 100000000L)) // Unique phone
                         .email(name.replace(" ", "") + "@example.com")
                         .build())
                 .arrivalTime(TimeDto.builder().checkIn("14:00").build())

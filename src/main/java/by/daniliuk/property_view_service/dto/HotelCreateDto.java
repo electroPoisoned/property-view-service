@@ -1,6 +1,7 @@
 package by.daniliuk.property_view_service.dto;
 
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -13,11 +14,13 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class HotelCreateDto {
     @NotNull
+    @NotBlank
     private String name;
 
     private String description;
 
     @NotNull
+    @NotBlank
     private String brand;
 
     @Valid
