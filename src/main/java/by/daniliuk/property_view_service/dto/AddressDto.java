@@ -23,5 +23,6 @@ public class AddressDto {
     @NotNull
     private String country;
 
+    @NotNull
     private String postCode;
 }

@@ -16,6 +16,8 @@ public class HotelCreateDto {
     private String name;
 
     private String description;
+
+    @NotNull
     private String brand;
 
     @Valid
@@ -27,5 +29,6 @@ public class HotelCreateDto {
     private ContactDto contacts;
 
     @Valid
+    @NotNull
     private TimeDto arrivalTime;
 }

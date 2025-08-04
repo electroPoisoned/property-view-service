@@ -1,5 +1,6 @@
 package by.daniliuk.property_view_service.exception;
 
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -32,5 +33,20 @@ public class GlobalExceptionHandler {
             errors.put(fieldName, errorMessage);
         });
         return ResponseEntity.badRequest().body(errors);
+    }
+
+    @ExceptionHandler(DataIntegrityViolationException.class)
+    public ResponseEntity<String> handleDataIntegrityViolation(DataIntegrityViolationException ex) {
+        String errorMessage = "Database constraint violation";
+
+        if (ex.getMessage() != null) {
+            if (ex.getMessage().contains("uc_contact_phone")) {
+                errorMessage = "Phone number must be unique";
+            } else if (ex.getMessage().contains("uc_contact_email")) {
+                errorMessage = "Email must be unique";
+            }
+        }
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorMessage);
     }
 }

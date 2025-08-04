@@ -15,6 +15,7 @@ import by.daniliuk.property_view_service.model.Time;
 import by.daniliuk.property_view_service.repository.AmenityRepository;
 import by.daniliuk.property_view_service.repository.HotelRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -46,7 +47,13 @@ public class HotelService {
 
     @Transactional
     public HotelSummaryDto createHotel(HotelCreateDto dto) {
-        Hotel hotel = convertToEntity(dto);
+        if (hotelRepository.existsByContactPhone(dto.getContacts().getPhone())) {
+            throw new DataIntegrityViolationException("Phone number must be unique");
+        }
+        if (hotelRepository.existsByContactEmail(dto.getContacts().getEmail())) {
+            throw new DataIntegrityViolationException("Email must be unique");
+        }
+        Hotel hotel = convertToHotelEntity(dto);
         hotel = hotelRepository.save(hotel);
         return convertToSummaryDto(hotel);
     }
@@ -96,7 +103,7 @@ public class HotelService {
                 .build();
     }
 
-    private Hotel convertToEntity(HotelCreateDto dto) {
+    private Hotel convertToHotelEntity(HotelCreateDto dto) {
         return Hotel.builder()
                 .name(dto.getName())
                 .description(dto.getDescription())
@@ -128,7 +135,7 @@ public class HotelService {
     private Time convertToTimeEntity(TimeDto dto) {
         return Time.builder()
                 .checkIn(dto.getCheckIn())
-                .checkOut(dto.getCheckOut() != null ? dto.getCheckOut() : "12:00")
+                .checkOut(dto.getCheckOut())
                 .build();
     }
 

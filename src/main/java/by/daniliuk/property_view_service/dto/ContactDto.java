@@ -14,5 +14,6 @@ public class ContactDto {
     @NotNull
     private String phone;
 
+    @NotNull
     private String email;
 }

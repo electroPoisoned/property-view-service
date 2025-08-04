@@ -35,6 +35,8 @@ databaseChangeLog:
               - column:
                   name: post_code
                   type: varchar(20)
+                  constraints:
+                    nullable: false
 
         - createTable:
             tableName: contacts
@@ -48,9 +50,15 @@ databaseChangeLog:
               - column:
                   name: phone
                   type: varchar(50)
+                  constraints:
+                    nullable: false
+                    unique: true
               - column:
                   name: email
                   type: varchar(255)
+                  constraints:
+                    nullable: false
+                    unique: true
 
         - createTable:
             tableName: check_times
@@ -64,6 +72,8 @@ databaseChangeLog:
               - column:
                   name: check_in
                   type: varchar(10)
+                  constraints:
+                    nullable: false
               - column:
                   name: check_out
                   type: varchar(10)
@@ -82,6 +92,7 @@ databaseChangeLog:
                   type: varchar(255)
                   constraints:
                     nullable: false
+                    unique: true
 
         - createTable:
             tableName: hotels
@@ -103,15 +114,23 @@ databaseChangeLog:
               - column:
                   name: brand
                   type: varchar(255)
+                  constraints:
+                    nullable: false
               - column:
                   name: address_id
                   type: bigint
+                  constraints:
+                    nullable: false
               - column:
                   name: contact_id
                   type: bigint
+                  constraints:
+                    nullable: false
               - column:
                   name: time_id
                   type: bigint
+                  constraints:
+                    nullable: false
 
         - createTable:
             tableName: hotel_amenities

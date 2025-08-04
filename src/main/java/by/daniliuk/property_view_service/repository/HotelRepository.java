@@ -34,4 +34,12 @@ public interface HotelRepository extends JpaRepository<Hotel, Long> {
 
     @Query("SELECT h.brand AS key, COUNT(h) AS value FROM Hotel h GROUP BY h.brand")
     List<Map<String, Object>> countHotelsByBrand();
+
+    @Query("SELECT CASE WHEN COUNT(h) > 0 THEN true ELSE false END " +
+            "FROM Hotel h WHERE h.contact.phone = :phone")
+    boolean existsByContactPhone(@Param("phone") String phone);
+
+    @Query("SELECT CASE WHEN COUNT(h) > 0 THEN true ELSE false END " +
+            "FROM Hotel h WHERE h.contact.email = :email")
+    boolean existsByContactEmail(@Param("email") String email);
 }

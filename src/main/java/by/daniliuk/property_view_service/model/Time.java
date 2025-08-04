@@ -24,7 +24,7 @@ public class Time {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "check_in", length = 10)
+    @Column(name = "check_in", length = 10, nullable = false)
     private String checkIn;
 
     @Column(name = "check_out", length = 10)
