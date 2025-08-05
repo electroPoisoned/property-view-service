@@ -33,7 +33,7 @@ public class GlobalExceptionHandler {
             String errorMessage = error.getDefaultMessage();
             errors.put(fieldName, errorMessage);
         });
-        return ResponseEntity.badRequest().body(errors);
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errors);
     }
 
     @ExceptionHandler(ConstraintViolationException.class)
@@ -44,21 +44,11 @@ public class GlobalExceptionHandler {
             String field = violation.getPropertyPath().toString();
             errors.put(field, violation.getMessage());
         });
-        return ResponseEntity.badRequest().body(errors);
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errors);
     }
 
     @ExceptionHandler(DataIntegrityViolationException.class)
     public ResponseEntity<String> handleDataIntegrityViolation(DataIntegrityViolationException ex) {
-        String errorMessage = "Database constraint violation";
-
-        if (ex.getMessage() != null) {
-            if (ex.getMessage().contains("uc_contact_phone")) {
-                errorMessage = "Phone number must be unique";
-            } else if (ex.getMessage().contains("uc_contact_email")) {
-                errorMessage = "Email must be unique";
-            }
-        }
-
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorMessage);
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
     }
 }

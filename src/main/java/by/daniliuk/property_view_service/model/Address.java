@@ -38,9 +38,4 @@ public class Address {
 
     @Column(name = "post_code", nullable = false)
     private String postCode;
-
-    public String toFormattedString() {
-        return String.format("%d %s, %s, %s, %s",
-                houseNumber, street, city, postCode, country);
-    }
 }

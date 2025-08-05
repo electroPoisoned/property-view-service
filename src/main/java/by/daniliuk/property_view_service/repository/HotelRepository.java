@@ -16,14 +16,12 @@ public interface HotelRepository extends JpaRepository<Hotel, Long> {
             "WHERE (:name IS NULL OR LOWER(h.name) LIKE LOWER(CONCAT('%', :name, '%'))) " +
             "AND (:brand IS NULL OR LOWER(h.brand) = LOWER(:brand)) " +
             "AND (:city IS NULL OR LOWER(h.address.city) = LOWER(:city)) " +
-            "AND (:country IS NULL OR LOWER(h.address.country) = LOWER(:country)) " +
-            "AND (:amenity IS NULL OR EXISTS (SELECT a FROM h.amenities a WHERE LOWER(a.name) = LOWER(:amenity)))")
+            "AND (:country IS NULL OR LOWER(h.address.country) = LOWER(:country))")
     List<Hotel> searchHotels(
             @Param("name") String name,
             @Param("brand") String brand,
             @Param("city") String city,
-            @Param("country") String country,
-            @Param("amenity") String amenity
+            @Param("country") String country
     );
 
     @Query("SELECT h.address.city AS key, COUNT(h) AS value FROM Hotel h GROUP BY h.address.city")

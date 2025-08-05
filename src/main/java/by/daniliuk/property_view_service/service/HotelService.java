@@ -59,7 +59,7 @@ public class HotelService {
     }
 
     @Transactional
-    public void addAmenities(Long hotelId, List<String> amenityNames) {
+    public Set<String> addAmenities(Long hotelId, List<String> amenityNames) {
         Hotel hotel = hotelRepository.findById(hotelId)
                 .orElseThrow(() -> new HotelNotFoundException("Hotel not found with id: " + hotelId));
 
@@ -70,22 +70,50 @@ public class HotelService {
 
         hotel.getAmenities().addAll(amenities);
         hotelRepository.save(hotel);
+
+        return hotel.getAmenities().stream()
+                .map(Amenity::getName)
+                .collect(Collectors.toSet());
     }
 
     @Transactional(readOnly = true)
-    public List<HotelSummaryDto> searchHotels(String name, String brand, String city, String country, String amenity) {
-        List<Hotel> hotels = hotelRepository.searchHotels(name, brand, city, country, amenity);
+    public List<HotelSummaryDto> searchHotels(
+            String name,
+            String brand,
+            String city,
+            String country,
+            List<String> amenities
+    ) {
+        List<Hotel> hotels = hotelRepository.searchHotels(name, brand, city, country);
+
+        if (amenities != null && !amenities.isEmpty()) {
+            hotels = filterHotelsByAmenities(hotels, amenities);
+        }
+
         return hotels.stream()
                 .map(this::convertToSummaryDto)
                 .collect(Collectors.toList());
     }
 
+    private List<Hotel> filterHotelsByAmenities(List<Hotel> hotels, List<String> amenityNames) {
+        return hotels.stream()
+                .filter(hotel -> {
+                    Set<String> hotelAmenities = hotel.getAmenities().stream()
+                            .map(Amenity::getName)
+                            .collect(Collectors.toSet());
+                    return hotelAmenities.containsAll(amenityNames);
+                })
+                .collect(Collectors.toList());
+    }
+
+
     private HotelSummaryDto convertToSummaryDto(Hotel hotel) {
+        AddressDto addressDto = convertToAddressDto(hotel.getAddress());
         return HotelSummaryDto.builder()
                 .id(hotel.getId())
                 .name(hotel.getName())
                 .description(hotel.getDescription())
-                .address(hotel.getAddress().toFormattedString())
+                .address(formatAddress(addressDto))
                 .phone(hotel.getContact().getPhone())
                 .build();
     }
@@ -161,5 +189,14 @@ public class HotelService {
                 .checkIn(time.getCheckIn())
                 .checkOut(time.getCheckOut())
                 .build();
+    }
+
+    public static String formatAddress(AddressDto address) {
+        return String.format("%d %s, %s, %s, %s",
+                address.getHouseNumber(),
+                address.getStreet(),
+                address.getCity(),
+                address.getPostCode(),
+                address.getCountry());
     }
 }

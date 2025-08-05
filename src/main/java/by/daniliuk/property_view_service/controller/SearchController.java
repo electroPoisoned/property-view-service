@@ -23,8 +23,8 @@ public class SearchController {
             @RequestParam(required = false) String brand,
             @RequestParam(required = false) String city,
             @RequestParam(required = false) String country,
-            @RequestParam(required = false) String amenity) {
+            @RequestParam(required = false)  List<String> amenities) {
 
-        return hotelService.searchHotels(name, brand, city, country, amenity);
+        return hotelService.searchHotels(name, brand, city, country, amenities);
     }
 }

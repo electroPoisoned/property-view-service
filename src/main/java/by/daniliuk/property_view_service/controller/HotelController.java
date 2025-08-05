@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Set;
 
 @RestController
 @RequestMapping("/hotels")
@@ -41,8 +42,9 @@ public class HotelController {
     }
 
     @PostMapping("/{id}/amenities")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void addAmenities(@PathVariable Long id, @RequestBody List<String> amenities) {
-        hotelService.addAmenities(id, amenities);
+    //@ResponseStatus(HttpStatus.NO_CONTENT)
+    @ResponseStatus(HttpStatus.OK)
+    public Set<String> addAmenities(@PathVariable Long id, @RequestBody List<String> amenities) {
+        return hotelService.addAmenities(id, amenities);
     }
 }

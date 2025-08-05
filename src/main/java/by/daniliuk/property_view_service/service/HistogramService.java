@@ -4,6 +4,7 @@ import by.daniliuk.property_view_service.repository.AmenityRepository;
 import by.daniliuk.property_view_service.repository.HotelRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Map;
@@ -16,6 +17,7 @@ public class HistogramService {
     private final HotelRepository hotelRepository;
     private final AmenityRepository amenityRepository;
 
+    @Transactional
     public Map<String, Long> getHistogram(String param) {
         switch (param.toLowerCase()) {
             case "brand":
